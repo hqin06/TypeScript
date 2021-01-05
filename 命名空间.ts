@@ -58,3 +58,10 @@ namespace B{
 
 var c=new B.Cat('小花');
 c.eat();
+
+import {C,D} from './model/animal';
+var d=new C.Dog('小黑');
+d.eat();
+
+var dog=new D.Dog('小花');
+dog.eat();
