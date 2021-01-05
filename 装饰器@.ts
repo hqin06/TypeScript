@@ -173,3 +173,100 @@ console.log(http6.apiUrl);// xxxxx
 // (2)参数装饰器，然后依次是方法装饰器，访问符装饰器，或属性装饰器应用到每个静态成员。
 // (3)参数装饰器应用到构造函数。
 // (4)类装饰器应用到类。
+
+//属性》方法》方法参数》类
+// 如果有多个同样的装饰器，它会先执行后面的
+function logClass9(params:string){
+    return function(target:any){
+      console.log('类装饰器1')
+    }
+}
+
+function logClass2(params:string){
+    return function(target:any){
+      console.log('类装饰器2')
+    }
+}
+
+function logAttribute1(params?:string){
+    return function(target:any,attrName:any){
+      console.log('属性装饰器1')
+    }
+}
+
+function logAttribute2(params?:string){
+    return function(target:any,attrName:any){
+      console.log('属性装饰器2')
+    }
+}
+
+function logMethod1(params?:string){
+    return function(target:any,attrName:any,desc:any){
+      console.log('方法装饰器1')
+    }
+}
+function logMethod2(params?:string){
+    return function(target:any,attrName:any,desc:any){
+      console.log('方法装饰器2')
+    }
+}
+
+
+
+function logParams1(params?:string){
+    return function(target:any,attrName:any,desc:any){
+      console.log('方法参数装饰器1')
+    }
+}
+
+function logParams2(params?:string){
+    return function(target:any,attrName:any,desc:any){
+      console.log('方法参数装饰器2')
+    }
+}
+
+@logClass9('http://www.itying.com/api')
+@logClass2('xxxx')
+class HttpClient{
+    @logAttribute1()
+    @logAttribute2()
+    public apiUrl:string | undefined;
+    constructor(){
+    }
+
+    @logMethod1()
+    @logMethod2()
+    getData(){
+        return true;
+    }
+
+    setData(@logParams1() attr1:any,@logParams2() attr2:any,){
+
+    }
+}
+
+var http:any=new HttpClient();
+
+// 9、装饰器扩展-访问器装饰器
+// 对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
+// 成员的名字。
+// 成员的属性描述符。
+function configurable(value: boolean) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        descriptor.configurable = value;
+    };
+}
+class Point {
+    private _x: number;
+    private _y: number;
+    constructor(x: number, y: number) {
+        this._x = x;
+        this._y = y;
+    }
+
+    @configurable(false)
+    get x() { return this._x; }
+
+    @configurable(false)
+    get y() { return this._y; }
+}
